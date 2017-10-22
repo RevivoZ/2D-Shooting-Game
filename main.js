@@ -80,31 +80,6 @@ function movement() {
 
 	player.draw();
 	apple.draw();
-
-	/*	for (i = 0; i < 1; i++) {
-			spaceX = player.x - bodySize[i].x;
-			spaceY = player.y - bodySize[i].y;
-			
-			if (spaceX > 10) {
-				bodySize[i].x += speed;
-				console.log(bodySize[i].x);
-			} else if (spaceX < -10) {
-				bodySize[i].x -= speed;
-				console.log(bodySize[i].x);
-			}
-
-			if (spaceY > 10) {
-				bodySize[i].y += speed;
-				console.log(bodySize[i].x);
-			} else if (spaceY < -10) {
-				bodySize[i].y -= speed;
-				console.log(bodySize[i].x);
-			}
-
-		}
-
-		bodySize[0].draw();*/
-
 	looper = window.requestAnimationFrame(movement);
 
 
