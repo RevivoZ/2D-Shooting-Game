@@ -17,7 +17,7 @@ io.sockets.on('connection', function (socket) {
 	console.log('User Connect !');
 
 
-	socket.on('Disconnect', function (data) {
+	socket.on('disconnect', function (data) {
 		console.log('User Disconnect');
 
 	})
