@@ -1,3 +1,4 @@
+var socket = io();
 var canvas = document.getElementById("canv");
 var ctx = canvas.getContext('2d');
 var points = document.getElementById("counter");
@@ -24,9 +25,6 @@ function circ(_x, _y, _radi, _colo) {
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		ctx.fillStyle = this.color;
 		ctx.fill();
-
-
-
 	}
 
 	this.drawBody = function () {
@@ -34,10 +32,7 @@ function circ(_x, _y, _radi, _colo) {
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		ctx.fillStyle = this.color;
 		ctx.fill();
-
 	}
-
-
 }
 
 
@@ -81,32 +76,7 @@ function movement() {
 	player.draw();
 	apple.draw();
 
-	/*	for (i = 0; i < 1; i++) {
-			spaceX = player.x - bodySize[i].x;
-			spaceY = player.y - bodySize[i].y;
-			
-			if (spaceX > 10) {
-				bodySize[i].x += speed;
-				console.log(bodySize[i].x);
-			} else if (spaceX < -10) {
-				bodySize[i].x -= speed;
-				console.log(bodySize[i].x);
-			}
-
-			if (spaceY > 10) {
-				bodySize[i].y += speed;
-				console.log(bodySize[i].x);
-			} else if (spaceY < -10) {
-				bodySize[i].y -= speed;
-				console.log(bodySize[i].x);
-			}
-
-		}
-
-		bodySize[0].draw();*/
-
 	looper = window.requestAnimationFrame(movement);
-
 
 }
 
