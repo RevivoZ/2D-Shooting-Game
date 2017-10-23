@@ -40,12 +40,6 @@ looper = setInterval(loop, 500);
 // Socket.IO Controller
 io.sockets.on('connection', function (socket) {
 	console.log('User Connect !');
-	socket.on('new user' , function (data)){
-
-
-
-	}
-
 
 
 	// Create A New User

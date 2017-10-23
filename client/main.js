@@ -127,7 +127,3 @@ var apple = new circ(witRand(), heiRand(), 10, 'red');
 
 player.draw();
 apple.draw();
-
-socket.on('hey', function () {
-	console.log("!!!!!!!!!!!!!!!");
-})
