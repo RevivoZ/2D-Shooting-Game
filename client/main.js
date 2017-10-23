@@ -8,9 +8,33 @@ var spaceX;
 var spaceY;
 var bodySize = [];
 var speed = 1;
+var users;
 
 
-socket.emit('new user', 'Hey');
+$("#SendNick").click(function () {
+	$("#darkBox").hide(300);
+	socket.emit('new user', document.getElementById('nickName').value);
+})
+
+socket.on('update', function (data) {
+	clear();
+	for (i = 0; i < data.length; i++) {
+		draw(data[i]);
+	}
+})
+
+function draw(data) {
+	ctx.beginPath();
+	ctx.arc(data.x, data.y, data.radius, 0, 2 * Math.PI);
+	ctx.fillStyle = data.color;
+	ctx.fill();
+}
+
+function clear() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+/*
 
 function circ(_x, _y, _radi, _colo) {
 
@@ -37,11 +61,7 @@ function circ(_x, _y, _radi, _colo) {
 }
 
 
-function clear() {
-
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-}
+*/
 
 
 function movement() {
@@ -81,28 +101,28 @@ function movement() {
 function keyListen(event) {
 	switch (event.keyCode) {
 		case 37: // Left
-			window.cancelAnimationFrame(looper);
-			player.vx = -speed;
-			player.vy = 0;
-			movement();
+			socket.emit('change direction', {
+				vx: -speed,
+				vy: 0
+			});
 			break;
 		case 38: // Up
-			window.cancelAnimationFrame(looper);
-			player.vx = 0;
-			player.vy = -speed;
-			movement();
+			socket.emit('change direction', {
+				vx: 0,
+				vy: -speed
+			});
 			break;
 		case 39: // Right
-			window.cancelAnimationFrame(looper);
-			player.vx = speed;
-			player.vy = 0;
-			movement();
+			socket.emit('change direction', {
+				vx: speed,
+				vy: 0
+			});
 			break;
 		case 40: // Down
-			window.cancelAnimationFrame(looper);
-			player.vx = 0;
-			player.vy = speed;
-			movement();
+			socket.emit('change direction', {
+				vx: 0,
+				vy: speed
+			});
 			break;
 	}
 
@@ -118,12 +138,16 @@ function heiRand() {
 }
 
 
+canvas.addEventListener('click', function (e) {
 
-bodySize.push(new circ(canvas.width / 2, canvas.height / 2, 5, 'green'));
-var player = new circ(canvas.width / 2, canvas.height / 2, 10, 'blue');
+	socket.emit('shoot', {
+		x: e.clientX,
+		y: e.clientY
+	});
 
+});
 
-var apple = new circ(witRand(), heiRand(), 10, 'red');
-
-player.draw();
-apple.draw();
+/*
+canvas.addEventListener('mousemove', function (e) {
+	ball.y = e.clientY;
+});*/
