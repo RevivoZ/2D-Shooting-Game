@@ -2,7 +2,7 @@ var socket = io();
 var canvas = document.getElementById("canv");
 var ctx = canvas.getContext('2d');
 var points = document.getElementById("counter");
-var counterPoints = 0
+var counterPoints = 0;
 var looper;
 var spaceX;
 var spaceY;
@@ -10,6 +10,7 @@ var bodySize = [];
 var speed = 1;
 
 
+socket.emit('new user', 'Hey');
 
 function circ(_x, _y, _radi, _colo) {
 
@@ -36,7 +37,6 @@ function circ(_x, _y, _radi, _colo) {
 }
 
 
-
 function clear() {
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -56,9 +56,7 @@ function movement() {
 			counterPoints++;
 			apple.x = witRand();
 			apple.y = heiRand();
-			var snakeLength =
-				points.innerHTML = "Points : " + counterPoints;
-
+			var snakeLength = points.innerHTML = "Points : " + counterPoints;
 		}
 	}
 
@@ -79,7 +77,6 @@ function movement() {
 	looper = window.requestAnimationFrame(movement);
 
 }
-
 
 function keyListen(event) {
 	switch (event.keyCode) {
@@ -112,10 +109,6 @@ function keyListen(event) {
 }
 
 
-bodySize.push(new circ(canvas.width / 2, canvas.height / 2, 5, 'green'));
-var player = new circ(canvas.width / 2, canvas.height / 2, 10, 'blue');
-
-
 function witRand() {
 	return Math.floor((Math.random() * canvas.width));
 }
@@ -126,8 +119,15 @@ function heiRand() {
 
 
 
+bodySize.push(new circ(canvas.width / 2, canvas.height / 2, 5, 'green'));
+var player = new circ(canvas.width / 2, canvas.height / 2, 10, 'blue');
+
 
 var apple = new circ(witRand(), heiRand(), 10, 'red');
 
 player.draw();
 apple.draw();
+
+socket.on('hey', function () {
+	console.log("!!!!!!!!!!!!!!!");
+})
