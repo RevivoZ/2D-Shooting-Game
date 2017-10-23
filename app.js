@@ -15,6 +15,11 @@ console.log('server Started');
 
 io.sockets.on('connection', function (socket) {
 	console.log('User Connect !');
+	socket.on('new user' , function (data)){
+
+
+
+	}
 
 
 	socket.on('disconnect', function (data) {
