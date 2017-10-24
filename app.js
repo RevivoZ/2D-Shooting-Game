@@ -29,7 +29,7 @@ function Circ(_nick, _id, _radi, _team) {
 	this.radius = _radi;
 	this.color = this.team ? 'red' : 'blue';
 	this.arrows = [];
-	this.health = 100;
+	this.health = 40;
 
 }
 
@@ -44,7 +44,7 @@ function Arrow(_x, _y, _id, _speed) {
 	this.radius = 5;
 	this.speed = _speed ? _speed : 5;
 	this.color = 'black';
-	this.dmg = 10;
+	this.dmg = 5;
 }
 
 
@@ -98,6 +98,7 @@ function loop() {
 				if (Math.abs(users[z].x - users[i].arrows[j].x) <= users[i].arrows[j].radius * 2) {
 					if (Math.abs(users[z].y - users[i].arrows[j].y) <= users[i].arrows[j].radius * 2) {
 						if (users[i].arrows[j].id != users[z].id) {
+							users[z].health -= users[i].arrows[j].dmg;
 							users[i].arrows.splice(j, 1);
 							break;
 						}

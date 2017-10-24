@@ -29,6 +29,17 @@ function draw(data) {
 	ctx.fillStyle = data.color;
 	ctx.fill();
 
+	ctx.beginPath();
+	ctx.moveTo(data.x - 20, data.y + 25);
+	ctx.lineTo(data.x - 20 + data.health, data.y + 25);
+
+	ctx.closePath();
+
+	ctx.strokeStyle = 'green';
+	ctx.lineWidth = 5;
+	ctx.stroke();
+
+
 	for (j = 0; j < data.arrows.length; j++) {
 		ctx.beginPath();
 		ctx.arc(data.arrows[j].x, data.arrows[j].y, data.arrows[j].radius, 0, 2 * Math.PI);
