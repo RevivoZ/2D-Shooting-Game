@@ -42,36 +42,6 @@ function clear() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-/*
-
-function circ(_x, _y, _radi, _colo) {
-
-	this.x = _x;
-	this.y = _y;
-	this.vx = 0;
-	this.vy = 0;
-	this.radius = _radi;
-	this.color = _colo;
-
-	this.draw = function () {
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-	}
-
-	this.drawBody = function () {
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-	}
-}
-
-
-*/
-
-
 function movement() {
 	clear();
 
@@ -79,8 +49,8 @@ function movement() {
 	player.y += player.vy;
 
 	// Apple Eating Check
-	if (Math.abs(player.x - apple.x) <= apple.radius * 1.7) {
-		if (Math.abs(player.y - apple.y) <= apple.radius * 1.7) {
+	if (Math.abs(player.x - apple.x) <= apple.radius * 2) {
+		if (Math.abs(player.y - apple.y) <= apple.radius * 2) {
 			counterPoints++;
 			apple.x = witRand();
 			apple.y = heiRand();

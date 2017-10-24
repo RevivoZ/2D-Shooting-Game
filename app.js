@@ -3,15 +3,15 @@ var app = express();
 var serv = require('http').Server(app);
 var io = require('socket.io')(serv, {});
 var looper;
-var canvWidth = 400;
-var canvHeight = 400;
+var canvWidth = 950;
+var canvHeight = 630;
 var users = [];
 
 app.get('/', function (req, res) {
 	res.sendFile(__dirname + '/client/index.html');
 });
 app.use('/client', express.static(__dirname + '/client'));
-serv.listen(80);
+serv.listen(2000);
 
 console.log('server Started');
 
@@ -29,6 +29,7 @@ function Circ(_nick, _id, _radi, _team) {
 	this.radius = _radi;
 	this.color = this.team ? 'red' : 'blue';
 	this.arrows = [];
+	this.health = 100;
 
 }
 
@@ -43,7 +44,7 @@ function Arrow(_x, _y, _id, _speed) {
 	this.radius = 5;
 	this.speed = _speed ? _speed : 5;
 	this.color = 'black';
-
+	this.dmg = 10;
 }
 
 
@@ -127,7 +128,7 @@ io.sockets.on('connection', function (socket) {
 
 	// Create A New User
 	socket.on('new user', function (data) {
-		users.push(new Circ(data, socket.id, 10, (users.length % 2 == 0)));
+		users.push(new Circ(data, socket.id, 20, (users.length % 2 == 0)));
 		if (users.length % 2 == 0 && users.length > 0) {
 			io.sockets.emit('update', users);
 		}
@@ -146,7 +147,7 @@ io.sockets.on('connection', function (socket) {
 		}
 	})
 
-	// Shoot 
+	// Shoot
 	socket.on('shoot', function (data) {
 		for (i = 0; i < users.length; i++) {
 			if (socket.id == users[i].id) {
