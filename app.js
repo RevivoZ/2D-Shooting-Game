@@ -17,7 +17,7 @@ console.log('server Started');
 
 
 // Player Constractor
-function circ(_nick, _id, _radi, _team) {
+function Circ(_nick, _id, _radi, _team) {
 
 	this.nick = _nick;
 	this.id = _id;
@@ -33,7 +33,7 @@ function circ(_nick, _id, _radi, _team) {
 }
 
 // Arrow Constractor
-function arrow(_x, _y) {
+function Arrow(_x, _y) {
 
 	this.x = _x;
 	this.y = _y;
@@ -44,20 +44,47 @@ function arrow(_x, _y) {
 
 }
 
-// 100 100
-// 110 200
 
-// The Main Loop For All Objects Movement
+/**** The Main Loop For All Objects Movement ****/
 function loop() {
 
 	for (i = 0; i < users.length; i++) {
 		users[i].x += users[i].vx;
 		users[i].y += users[i].vy;
+
+		for (j = 0; j < users[i].arrows.length; j++) {
+			users[i].arrows[j].x += users[i].arrows[j].vx;
+			users[i].arrows[j].y += users[i].arrows[j].vy;
+		}
 	}
 
 	io.sockets.emit('update', users);
 }
 looper = setInterval(loop, 20);
+/************************************************/
+
+
+
+
+// Get Direction For Arrow Shooting
+function getDirection(playerX, playerY, mouseX, mouseY) {
+
+	var dircX = mouseX - playerX;
+	var dircY = mouseY - playerY;
+
+	var splitX = (dircY / Math.abs(dircX));
+	var splitY = (dircX / Math.abs(dircY));
+
+	var totX = 5 / (Math.abs(splitX) + 1);
+	var totY = 5 / (Math.abs(splitY) + 1);
+
+	var vx = totX * (dircX / Math.abs(dircX));
+	var vy = totY * (dircY / Math.abs(dircY));
+
+	return [vx, vy];
+}
+
+
 
 
 // Socket.IO Controller
@@ -67,7 +94,7 @@ io.sockets.on('connection', function (socket) {
 
 	// Create A New User
 	socket.on('new user', function (data) {
-		users.push(new circ(data, socket.id, 10, (users.length % 2 == 0)));
+		users.push(new Circ(data, socket.id, 10, (users.length % 2 == 0)));
 		console.log(users);
 		if (users.length % 2 == 0 && users.length > 0) {
 			io.sockets.emit('update', users);
@@ -91,9 +118,12 @@ io.sockets.on('connection', function (socket) {
 	socket.on('shoot', function (data) {
 		for (i = 0; i < users.length; i++) {
 			if (socket.id == users[i].id) {
-				var arrow = new arrow(users[i].x, users[i].y)
-				arrow.vx = 0;
-				arrow.vy = 0;
+				var arrow = new Arrow(users[i].x, users[i].y);
+
+				var direc = getDirection(users[i].x, users[i].y, data.x, data.y);
+
+				arrow.vx = direc[0];
+				arrow.vy = direc[1];
 
 				users[i].arrows.push(arrow);
 				return;
