@@ -73,7 +73,7 @@ function getDirection(playerX, playerY, mouseX, mouseY, _speed) {
 function loop() {
 
 	for (i = 0; i < users.length; i++) {
-
+			
 		// Players Movement
 		users[i].x += users[i].vx;
 		users[i].y += users[i].vy;
