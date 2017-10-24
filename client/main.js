@@ -29,10 +29,10 @@ function draw(data) {
 	ctx.fillStyle = data.color;
 	ctx.fill();
 
-	for (i = 0; i < data.arrows.length; i++) {
+	for (j = 0; j < data.arrows.length; j++) {
 		ctx.beginPath();
-		ctx.arc(data.arrows[i].x, data.arrows[i].y, data.arrows[i].radius, 0, 2 * Math.PI);
-		ctx.fillStyle = data.arrows[i].color;
+		ctx.arc(data.arrows[j].x, data.arrows[j].y, data.arrows[j].radius, 0, 2 * Math.PI);
+		ctx.fillStyle = data.arrows[j].color;
 		ctx.fill();
 	}
 

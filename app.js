@@ -45,26 +45,6 @@ function Arrow(_x, _y) {
 }
 
 
-/**** The Main Loop For All Objects Movement ****/
-function loop() {
-
-	for (i = 0; i < users.length; i++) {
-		users[i].x += users[i].vx;
-		users[i].y += users[i].vy;
-
-		for (j = 0; j < users[i].arrows.length; j++) {
-			users[i].arrows[j].x += users[i].arrows[j].vx;
-			users[i].arrows[j].y += users[i].arrows[j].vy;
-		}
-	}
-
-	io.sockets.emit('update', users);
-}
-looper = setInterval(loop, 20);
-/************************************************/
-
-
-
 
 // Get Direction For Arrow Shooting
 function getDirection(playerX, playerY, mouseX, mouseY) {
@@ -83,6 +63,27 @@ function getDirection(playerX, playerY, mouseX, mouseY) {
 
 	return [vx, vy];
 }
+
+
+
+/**** The Main Loop For All Objects Movement ****/
+function loop() {
+
+	for (i = 0; i < users.length; i++) {
+		users[i].x += users[i].vx;
+		users[i].y += users[i].vy;
+
+		for (j = 0; j < users[i].arrows.length; j++) {
+			users[i].arrows[j].x += users[i].arrows[j].vx;
+			users[i].arrows[j].y += users[i].arrows[j].vy;
+		}
+	}
+
+	io.sockets.emit('update', users);
+}
+looper = setInterval(loop, 20);
+/************************************************/
+
 
 
 
@@ -124,6 +125,7 @@ io.sockets.on('connection', function (socket) {
 
 				arrow.vx = direc[0];
 				arrow.vy = direc[1];
+				arrow.color = users[i].color;
 
 				users[i].arrows.push(arrow);
 				return;
