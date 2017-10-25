@@ -7,8 +7,10 @@ var looper;
 var spaceX;
 var spaceY;
 var bodySize = [];
-var speed = 1;
+var speed = 3;
 var users;
+var map = [];
+
 
 
 $("#SendNick").click(function () {
@@ -23,8 +25,8 @@ socket.on('update', function (data) {
 	}
 })
 
-socket.on('gameOver' , function (data){
-console.log('here');
+socket.on('gameOver', function (data) {
+	console.log('here');
 
 
 
@@ -94,7 +96,6 @@ function movement() {
 
 }
 
-var map = [];
 
 function playerMovement(keyCode) {
 

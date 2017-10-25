@@ -41,7 +41,7 @@ function Arrow(_x, _y, _id, _speed) {
 	this.y = _y;
 	this.vx = 0;
 	this.vy = 0;
-	this.radius = 5;
+	this.radius = 8;
 	this.speed = _speed ? _speed : 5;
 	this.color = 'black';
 	this.dmg = 5;
