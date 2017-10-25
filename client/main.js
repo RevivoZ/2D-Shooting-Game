@@ -23,6 +23,13 @@ socket.on('update', function (data) {
 	}
 })
 
+socket.on('gameOver' , function (data){
+
+
+
+
+})
+
 function draw(data) {
 	ctx.beginPath();
 	ctx.arc(data.x, data.y, data.radius, 0, 2 * Math.PI);
@@ -89,25 +96,25 @@ function movement() {
 
 function keyListen(event) {
 	switch (event.keyCode) {
-		case 37: // Left
+		case 65: // Left
 			socket.emit('change direction', {
 				vx: -speed,
 				vy: 0
 			});
 			break;
-		case 38: // Up
+		case 87: // Up
 			socket.emit('change direction', {
 				vx: 0,
 				vy: -speed
 			});
 			break;
-		case 39: // Right
+		case 68: // Right
 			socket.emit('change direction', {
 				vx: speed,
 				vy: 0
 			});
 			break;
-		case 40: // Down
+		case 83: // Down
 			socket.emit('change direction', {
 				vx: 0,
 				vy: speed
