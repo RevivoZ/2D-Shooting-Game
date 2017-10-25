@@ -24,7 +24,7 @@ socket.on('update', function (data) {
 })
 
 socket.on('gameOver' , function (data){
-
+console.log('here');
 
 
 

@@ -73,9 +73,10 @@ function getDirection(playerX, playerY, mouseX, mouseY, _speed) {
 function loop() {
 
 	for (i = 0; i < users.length; i++) {
-			if(users[i].health <= 0 ) {
-				io.sockets.socket(users[i].id).emit('gameOver' , users[i]);
-			}
+			// if(users[i].health <= 0 ) {
+			// 	var to = users[i].id;
+	 	// 		io.sockets.connected[to].emit('gameOver' , users[i]);
+			// }
 		// Players Movement
 		users[i].x += users[i].vx;
 		users[i].y += users[i].vy;
