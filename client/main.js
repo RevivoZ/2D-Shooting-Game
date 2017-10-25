@@ -9,6 +9,9 @@ var spaceY;
 var bodySize = [];
 var speed = 3;
 var users;
+var shootLoop;
+var mouseX;
+var mouseY;
 var map = [];
 
 
@@ -26,7 +29,6 @@ socket.on('update', function (data) {
 })
 
 socket.on('gameOver', function (data) {
-	console.log('here');
 
 
 
@@ -97,36 +99,36 @@ function movement() {
 }
 
 
-function playerMovement(keyCode) {
+function playerMovement() {
 
-	switch (keyCode) {
-		case 65: // Left
-			socket.emit('change direction', {
-				vx: -speed,
-				vy: 0
-			});
-			break;
-		case 87: // Up
-			socket.emit('change direction', {
-				vx: 0,
-				vy: -speed
-			});
-			break;
-		case 68: // Right
-			socket.emit('change direction', {
-				vx: speed,
-				vy: 0
-			});
-			break;
-		case 83: // Down
-			socket.emit('change direction', {
-				vx: 0,
-				vy: speed
-			});
-			break;
-	}
-
-	if (map.length >= 2) {
+	if (map.length == 1) {
+		switch (map[0]) {
+			case 65: // Left
+				socket.emit('change direction', {
+					vx: -speed,
+					vy: 0
+				});
+				break;
+			case 87: // Up
+				socket.emit('change direction', {
+					vx: 0,
+					vy: -speed
+				});
+				break;
+			case 68: // Right
+				socket.emit('change direction', {
+					vx: speed,
+					vy: 0
+				});
+				break;
+			case 83: // Down
+				socket.emit('change direction', {
+					vx: 0,
+					vy: speed
+				});
+				break;
+		}
+	} else {
 
 		switch (map.join(' ')) {
 
@@ -171,29 +173,26 @@ function playerMovement(keyCode) {
 
 function keyListen(event) {
 
-	if (map.length < 2) {
-		if (map.length > 0) {
-			if (map[0] == event.keyCode) {
-				return;
-			}
+	for (i = 0; i < map.length; i++) {
+		if (event.keyCode == map[i]) {
+			return;
 		}
-
-		map.push(event.keyCode);
 	}
-	playerMovement(event.keyCode);
-	console.log(map);
+	map.push(event.keyCode);
+	playerMovement();
 }
 
 
 function keyListenUP(e) {
 
-	console.log(map + " : " + e.keyCode);
-
-	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
-	console.log(map);
+	for (i = 0; i < map.length; i++) {
+		if (e.keyCode == map[i]) {
+			map.splice(i, 1);
+		}
+	}
 
 	if (map.length >= 1) {
-		playerMovement(map[0]);
+		playerMovement();
 
 	} else {
 		socket.emit('change direction', {
@@ -201,39 +200,34 @@ function keyListenUP(e) {
 			vy: 0
 		});
 	}
-
 }
 
 
-function witRand() {
-	return Math.floor((Math.random() * canvas.width));
-}
 
-function heiRand() {
-	return Math.floor((Math.random() * canvas.height));
-}
-
-var shootLoop;
-canvas.addEventListener('mousedown', function (e) {
-
+/*************** Mouse Shooting Engine *****************/
+function shooting() {
 	shootLoop = setInterval(function () {
 		socket.emit('shoot', {
-			x: e.clientX,
-			y: e.clientY
+			x: mouseX,
+			y: mouseY
 		});
-	}, 200);
+	}, 150);
+}
 
-
-
+canvas.addEventListener('mousedown', function (e) {
+	clearInterval(shootLoop);
+	mouseX = e.clientX;
+	mouseY = e.clientY;
+	shooting();
 });
 
 canvas.addEventListener('mouseup', function (e) {
-
+	mouseDown = false;
 	clearInterval(shootLoop);
-
 });
 
-/*
 canvas.addEventListener('mousemove', function (e) {
-	ball.y = e.clientY;
-});*/
+	mouseX = e.clientX;
+	mouseY = e.clientY;
+});
+/******************************************************/
