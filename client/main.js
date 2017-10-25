@@ -87,32 +87,111 @@ function movement() {
 
 }
 
-function keyListen(event) {
-	switch (event.keyCode) {
-		case 37: // Left
+var map = [];
+
+function playerMovement(keyCode) {
+
+	switch (keyCode) {
+		case 65: // Left
 			socket.emit('change direction', {
 				vx: -speed,
 				vy: 0
 			});
 			break;
-		case 38: // Up
+		case 87: // Up
 			socket.emit('change direction', {
 				vx: 0,
 				vy: -speed
 			});
 			break;
-		case 39: // Right
+		case 68: // Right
 			socket.emit('change direction', {
 				vx: speed,
 				vy: 0
 			});
 			break;
-		case 40: // Down
+		case 83: // Down
 			socket.emit('change direction', {
 				vx: 0,
 				vy: speed
 			});
 			break;
+	}
+
+	if (map.length >= 2) {
+
+		switch (map.join(' ')) {
+
+			// Up Left
+			case '87 65':
+			case '65 87':
+				socket.emit('change direction', {
+					vx: -(speed / 2),
+					vy: -(speed / 2)
+				});
+				break;
+
+				// Up Right
+			case '87 68':
+			case '68 87':
+				socket.emit('change direction', {
+					vx: (speed / 2),
+					vy: -(speed / 2)
+				});
+				break;
+
+				// Down Right
+			case '83 68':
+			case '68 83':
+				socket.emit('change direction', {
+					vx: (speed / 2),
+					vy: (speed / 2)
+				});
+				break;
+
+				// Down Left
+			case '83 65':
+			case '65 83':
+				socket.emit('change direction', {
+					vx: -(speed / 2),
+					vy: (speed / 2)
+				});
+				break;
+		}
+	}
+}
+
+function keyListen(event) {
+
+	if (map.length < 2) {
+		if (map.length > 0) {
+			if (map[0] == event.keyCode) {
+				return;
+			}
+		}
+
+		map.push(event.keyCode);
+	}
+	playerMovement(event.keyCode);
+	console.log(map);
+}
+
+
+function keyListenUP(e) {
+
+	console.log(map + " : " + e.keyCode);
+
+	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
+	console.log(map);
+
+	if (map.length >= 1) {
+		playerMovement(map[0]);
+
+	} else {
+		socket.emit('change direction', {
+			vx: 0,
+			vy: 0
+		});
 	}
 
 }
