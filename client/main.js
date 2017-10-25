@@ -23,6 +23,13 @@ socket.on('update', function (data) {
 	}
 })
 
+socket.on('gameOver' , function (data){
+
+
+
+
+})
+
 function draw(data) {
 	ctx.beginPath();
 	ctx.arc(data.x, data.y, data.radius, 0, 2 * Math.PI);
