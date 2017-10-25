@@ -64,39 +64,6 @@ function clear() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function movement() {
-	clear();
-
-	player.x += player.vx;
-	player.y += player.vy;
-
-	// Apple Eating Check
-	if (Math.abs(player.x - apple.x) <= apple.radius * 2) {
-		if (Math.abs(player.y - apple.y) <= apple.radius * 2) {
-			counterPoints++;
-			apple.x = witRand();
-			apple.y = heiRand();
-			var snakeLength = points.innerHTML = "Points : " + counterPoints;
-		}
-	}
-
-	// Walls Check
-	if (player.x >= canvas.width) {
-		player.x = 0;
-	} else if (player.y >= canvas.height) {
-		player.y = 0;
-	} else if (player.x <= 0) {
-		player.x = canvas.width;
-	} else if (player.y <= 0) {
-		player.y = canvas.height;
-	}
-
-	player.draw();
-	apple.draw();
-
-	looper = window.requestAnimationFrame(movement);
-
-}
 
 
 function playerMovement() {
@@ -140,7 +107,6 @@ function playerMovement() {
 					vy: -(speed / 2)
 				});
 				break;
-
 				// Up Right
 			case '87 68':
 			case '68 87':
@@ -149,7 +115,6 @@ function playerMovement() {
 					vy: -(speed / 2)
 				});
 				break;
-
 				// Down Right
 			case '83 68':
 			case '68 83':
@@ -158,7 +123,6 @@ function playerMovement() {
 					vy: (speed / 2)
 				});
 				break;
-
 				// Down Left
 			case '83 65':
 			case '65 83':
@@ -181,7 +145,6 @@ function keyListen(event) {
 	map.push(event.keyCode);
 	playerMovement();
 }
-
 
 function keyListenUP(e) {
 
