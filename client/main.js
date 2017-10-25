@@ -213,13 +213,23 @@ function heiRand() {
 	return Math.floor((Math.random() * canvas.height));
 }
 
+var shootLoop;
+canvas.addEventListener('mousedown', function (e) {
 
-canvas.addEventListener('click', function (e) {
+	shootLoop = setInterval(function () {
+		socket.emit('shoot', {
+			x: e.clientX,
+			y: e.clientY
+		});
+	}, 200);
 
-	socket.emit('shoot', {
-		x: e.clientX,
-		y: e.clientY
-	});
+
+
+});
+
+canvas.addEventListener('mouseup', function (e) {
+
+	clearInterval(shootLoop);
 
 });
 
