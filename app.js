@@ -150,8 +150,8 @@ io.sockets.on('connection', function (socket) {
 			}
 		}
 	})
+console.log();
 
-	
 	// Shoot
 	socket.on('shoot', function (data) {
 		for (i = 0; i < users.length; i++) {

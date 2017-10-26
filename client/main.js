@@ -30,9 +30,13 @@ socket.on('update', function (data) {
 
 socket.on('gameOver', function (data) {
 
-
+ // delete();
 
 })
+function _delete(){
+	console.log('hello!!');
+
+}
 
 function draw(data) {
 	ctx.beginPath();
