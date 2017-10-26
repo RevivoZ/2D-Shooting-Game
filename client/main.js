@@ -9,6 +9,9 @@ var spaceY;
 var bodySize = [];
 var speed = 3;
 var users;
+var shootLoop;
+var mouseX;
+var mouseY;
 var map = [];
 
 
@@ -26,7 +29,6 @@ socket.on('update', function (data) {
 })
 
 socket.on('gameOver', function (data) {
-	console.log('here');
 
 
 
@@ -62,71 +64,38 @@ function clear() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function movement() {
-	clear();
 
-	player.x += player.vx;
-	player.y += player.vy;
 
-	// Apple Eating Check
-	if (Math.abs(player.x - apple.x) <= apple.radius * 2) {
-		if (Math.abs(player.y - apple.y) <= apple.radius * 2) {
-			counterPoints++;
-			apple.x = witRand();
-			apple.y = heiRand();
-			var snakeLength = points.innerHTML = "Points : " + counterPoints;
+function playerMovement() {
+
+	if (map.length == 1) {
+		switch (map[0]) {
+			case 65: // Left
+				socket.emit('change direction', {
+					vx: -speed,
+					vy: 0
+				});
+				break;
+			case 87: // Up
+				socket.emit('change direction', {
+					vx: 0,
+					vy: -speed
+				});
+				break;
+			case 68: // Right
+				socket.emit('change direction', {
+					vx: speed,
+					vy: 0
+				});
+				break;
+			case 83: // Down
+				socket.emit('change direction', {
+					vx: 0,
+					vy: speed
+				});
+				break;
 		}
-	}
-
-	// Walls Check
-	if (player.x >= canvas.width) {
-		player.x = 0;
-	} else if (player.y >= canvas.height) {
-		player.y = 0;
-	} else if (player.x <= 0) {
-		player.x = canvas.width;
-	} else if (player.y <= 0) {
-		player.y = canvas.height;
-	}
-
-	player.draw();
-	apple.draw();
-
-	looper = window.requestAnimationFrame(movement);
-
-}
-
-
-function playerMovement(keyCode) {
-
-	switch (keyCode) {
-		case 65: // Left
-			socket.emit('change direction', {
-				vx: -speed,
-				vy: 0
-			});
-			break;
-		case 87: // Up
-			socket.emit('change direction', {
-				vx: 0,
-				vy: -speed
-			});
-			break;
-		case 68: // Right
-			socket.emit('change direction', {
-				vx: speed,
-				vy: 0
-			});
-			break;
-		case 83: // Down
-			socket.emit('change direction', {
-				vx: 0,
-				vy: speed
-			});
-			break;
-	}
-
-	if (map.length >= 2) {
+	} else {
 
 		switch (map.join(' ')) {
 
@@ -138,7 +107,6 @@ function playerMovement(keyCode) {
 					vy: -(speed / 2)
 				});
 				break;
-
 				// Up Right
 			case '87 68':
 			case '68 87':
@@ -147,7 +115,6 @@ function playerMovement(keyCode) {
 					vy: -(speed / 2)
 				});
 				break;
-
 				// Down Right
 			case '83 68':
 			case '68 83':
@@ -156,7 +123,6 @@ function playerMovement(keyCode) {
 					vy: (speed / 2)
 				});
 				break;
-
 				// Down Left
 			case '83 65':
 			case '65 83':
@@ -171,29 +137,25 @@ function playerMovement(keyCode) {
 
 function keyListen(event) {
 
-	if (map.length < 2) {
-		if (map.length > 0) {
-			if (map[0] == event.keyCode) {
-				return;
-			}
+	for (i = 0; i < map.length; i++) {
+		if (event.keyCode == map[i]) {
+			return;
 		}
-
-		map.push(event.keyCode);
 	}
-	playerMovement(event.keyCode);
-	console.log(map);
+	map.push(event.keyCode);
+	playerMovement();
 }
-
 
 function keyListenUP(e) {
 
-	console.log(map + " : " + e.keyCode);
-
-	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
-	console.log(map);
+	for (i = 0; i < map.length; i++) {
+		if (e.keyCode == map[i]) {
+			map.splice(i, 1);
+		}
+	}
 
 	if (map.length >= 1) {
-		playerMovement(map[0]);
+		playerMovement();
 
 	} else {
 		socket.emit('change direction', {
@@ -201,29 +163,34 @@ function keyListenUP(e) {
 			vy: 0
 		});
 	}
-
 }
 
 
-function witRand() {
-	return Math.floor((Math.random() * canvas.width));
+
+/*************** Mouse Shooting Engine *****************/
+function shooting() {
+	shootLoop = setInterval(function () {
+		socket.emit('shoot', {
+			x: mouseX,
+			y: mouseY
+		});
+	}, 150);
 }
 
-function heiRand() {
-	return Math.floor((Math.random() * canvas.height));
-}
-
-
-canvas.addEventListener('click', function (e) {
-
-	socket.emit('shoot', {
-		x: e.clientX,
-		y: e.clientY
-	});
-
+canvas.addEventListener('mousedown', function (e) {
+	clearInterval(shootLoop);
+	mouseX = e.clientX;
+	mouseY = e.clientY;
+	shooting();
 });
 
-/*
+canvas.addEventListener('mouseup', function (e) {
+	mouseDown = false;
+	clearInterval(shootLoop);
+});
+
 canvas.addEventListener('mousemove', function (e) {
-	ball.y = e.clientY;
-});*/
+	mouseX = e.clientX;
+	mouseY = e.clientY;
+});
+/******************************************************/

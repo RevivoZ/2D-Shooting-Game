@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
 app.use('/client', express.static(__dirname + '/client'));
 serv.listen(2000);
 
-console.log('server Started');
+console.log('Server Started !');
 
 
 // Player Constractor
@@ -42,11 +42,10 @@ function Arrow(_x, _y, _id, _speed) {
 	this.vx = 0;
 	this.vy = 0;
 	this.radius = 8;
-	this.speed = _speed ? _speed : 5;
+	this.speed = _speed ? _speed : 8;
 	this.color = 'black';
 	this.dmg = 5;
 }
-
 
 
 // Get Direction For Arrow Shooting
@@ -126,8 +125,7 @@ looper = setInterval(loop, 20);
 
 
 
-
-// Socket.IO Controller
+/**************** Socket.IO Controller ******************/
 io.sockets.on('connection', function (socket) {
 	console.log('User Connect !');
 
@@ -176,9 +174,6 @@ io.sockets.on('connection', function (socket) {
 	socket.on('disconnect', function (data) {
 		console.log('User Disconnect !');
 
-
 	})
-
-
 
 });
