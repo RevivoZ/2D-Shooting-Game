@@ -29,15 +29,10 @@ socket.on('update', function (data) {
 })
 
 socket.on('gameOver', function (data) {
-// console.log('here');
+	// socket.emit('disconnect' , data )
 
- // delete();
 
 })
-function _delete(){
-	console.log('hello!!');
-
-}
 
 function draw(data) {
 	ctx.beginPath();
@@ -62,7 +57,20 @@ function draw(data) {
 		ctx.fillStyle = data.arrows[j].color;
 		ctx.fill();
 	}
+	// cannon(data);
 
+function cannon(data){
+
+ctx.beginPath();
+ctx.strokeStyle = 'grey';
+
+ctx.lineTo((data.x -20) , data.y);
+ctx.closePath();
+
+
+
+
+ }
 }
 
 function clear() {
@@ -72,7 +80,7 @@ function clear() {
 
 
 function playerMovement() {
-
+	console.log(map[0]);
 	if (map.length == 1) {
 		switch (map[0]) {
 			case 65: // Left
@@ -145,11 +153,11 @@ function keyListen(event) {
 	for (i = 0; i < map.length; i++) {
 		if (event.keyCode == map[i]) {
 			return;
-		}
 	}
+}
+	map.push(event.keyCode);
 	playerMovement(event.keyCode);
 }
-
 function keyListenUP(e) {
 
 

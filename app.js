@@ -30,6 +30,7 @@ function Circ(_nick, _id, _radi, _team) {
 	this.color = this.team ? 'red' : 'blue';
 	this.arrows = [];
 	this.health = 40;
+	this.active = true;
 
 }
 
@@ -172,7 +173,7 @@ console.log();
 
 	// User Disconnect
 	socket.on('disconnect', function (data) {
-		console.log('User Disconnect !');
+		console.log(data + 'User Disconnect !');
 
 	})
 
