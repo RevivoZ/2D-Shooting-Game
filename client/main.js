@@ -57,20 +57,22 @@ function draw(data) {
 		ctx.fillStyle = data.arrows[j].color;
 		ctx.fill();
 	}
-	// cannon(data);
+// trying to do somthing
+ // _cannon();
 
-function cannon(data){
-
-ctx.beginPath();
-ctx.strokeStyle = 'grey';
-
-ctx.lineTo((data.x -20) , data.y);
-ctx.closePath();
-
-
-
-
- }
+// function _cannon(){
+//
+//
+// ctx.strokeStyle = 'green';
+// ctx.lineWidth = 6;
+// ctx.linecap = 'round';
+// ctx.lineTo((data.x -20) , data.y);
+// ctx.closePath();
+//
+//
+//
+//
+//  }
 }
 
 function clear() {
@@ -158,8 +160,8 @@ function keyListen(event) {
 	map.push(event.keyCode);
 	playerMovement(event.keyCode);
 }
-function keyListenUP(e) {
 
+function keyListenUP(e) {
 
 	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
 
