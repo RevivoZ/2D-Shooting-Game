@@ -29,6 +29,7 @@ socket.on('update', function (data) {
 })
 
 socket.on('gameOver', function (data) {
+// console.log('here');
 
  // delete();
 
@@ -146,17 +147,13 @@ function keyListen(event) {
 			return;
 		}
 	}
-	map.push(event.keyCode);
-	playerMovement();
+	playerMovement(event.keyCode);
 }
 
 function keyListenUP(e) {
 
-	for (i = 0; i < map.length; i++) {
-		if (e.keyCode == map[i]) {
-			map.splice(i, 1);
-		}
-	}
+
+	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
 
 	if (map.length >= 1) {
 		playerMovement();
