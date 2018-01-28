@@ -37,6 +37,7 @@ socket.on('update', function (data) {
 
 // Draw Objects On Canvas
 function draw(data) {
+	if(data.active){
 	ctx.beginPath();
 	ctx.arc(data.x, data.y, data.radius, 0, 2 * Math.PI);
 	ctx.fillStyle = data.color;
@@ -59,7 +60,22 @@ function draw(data) {
 		ctx.fillStyle = data.arrows[j].color;
 		ctx.fill();
 	}
-
+//  drew a canon;
+// _cannon();
+// function _cannon(){
+//
+//
+// ctx.strokeStyle = 'green';
+// ctx.lineWidth = 6;
+// ctx.linecap = 'round';
+// ctx.lineTo((data.x -20) , data.y);
+// ctx.closePath();
+//
+//
+//
+//
+//  }
+ }
 }
 
 // Clear Canvas
@@ -70,7 +86,7 @@ function clear() {
 
 /**************** keyListen And Movement **************/
 function playerMovement() {
-
+	console.log(map[0]);
 	if (map.length == 1) {
 		switch (map[0]) {
 			case 65: // Left
@@ -145,19 +161,15 @@ function keyListen(event) {
 	for (i = 0; i < map.length; i++) {
 		if (event.keyCode == map[i]) {
 			return;
-		}
 	}
+}
 	map.push(event.keyCode);
-	playerMovement();
+	playerMovement(event.keyCode);
 }
 
 function keyListenUP(e) {
 
-	for (i = 0; i < map.length; i++) {
-		if (e.keyCode == map[i]) {
-			map.splice(i, 1);
-		}
-	}
+	e.keyCode == map[0] ? map.splice(0, 1) : map.splice(1, 1);
 
 	if (map.length >= 1) {
 		playerMovement();
