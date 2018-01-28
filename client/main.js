@@ -15,12 +15,19 @@ var mouseY;
 var map = [];
 
 
-
+// Enter Nick Name And Start Play
 $("#SendNick").click(function () {
 	$("#darkBox").hide(300);
 	socket.emit('new user', document.getElementById('nickName').value);
 })
 
+
+// Game Over
+socket.on('gameOver', function (data) {
+	$("#darkBox").show();
+})
+
+// Upate The Canvas And Drow Each Object
 socket.on('update', function (data) {
 	clear();
 	for (i = 0; i < data.length; i++) {
@@ -28,12 +35,7 @@ socket.on('update', function (data) {
 	}
 })
 
-socket.on('gameOver', function (data) {
-
-
-
-})
-
+// Draw Objects On Canvas
 function draw(data) {
 	ctx.beginPath();
 	ctx.arc(data.x, data.y, data.radius, 0, 2 * Math.PI);
@@ -60,12 +62,13 @@ function draw(data) {
 
 }
 
+// Clear Canvas
 function clear() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 
-
+/**************** keyListen And Movement **************/
 function playerMovement() {
 
 	if (map.length == 1) {
@@ -77,12 +80,14 @@ function playerMovement() {
 				});
 				break;
 			case 87: // Up
+				console.log('Hey');
 				socket.emit('change direction', {
 					vx: 0,
 					vy: -speed
 				});
 				break;
 			case 68: // Right
+				console.log('Hey');
 				socket.emit('change direction', {
 					vx: speed,
 					vy: 0
@@ -164,11 +169,17 @@ function keyListenUP(e) {
 		});
 	}
 }
+/******************************************************/
+
 
 
 
 /*************** Mouse Shooting Engine *****************/
 function shooting() {
+	socket.emit('shoot', {
+		x: mouseX,
+		y: mouseY
+	});
 	shootLoop = setInterval(function () {
 		socket.emit('shoot', {
 			x: mouseX,

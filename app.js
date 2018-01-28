@@ -75,8 +75,8 @@ function loop() {
 		if (users[i].health <= 0) {
 			var to = users[i].id;
 			io.to(to).emit('gameOver', users[i]);
+			users.splice(i, 1);
 		}
-
 
 		// Players Movement
 		users[i].x += users[i].vx;
@@ -96,7 +96,6 @@ function loop() {
 				break;
 			}
 
-
 			/*************** Hit On Player Check ****************/
 			for (z = 0; z < users.length; z++) {
 				if (Math.abs(users[z].x - users[i].arrows[j].x) <= users[i].arrows[j].radius * 2) {
@@ -110,18 +109,12 @@ function loop() {
 				}
 			}
 			/*****************************************************/
-
-
-
 		}
 	}
-
-
 	io.sockets.emit('update', users);
 }
 looper = setInterval(loop, 20);
 /************************************************/
-
 
 
 
@@ -174,5 +167,4 @@ io.sockets.on('connection', function (socket) {
 		console.log('User Disconnect !');
 
 	})
-
 });
