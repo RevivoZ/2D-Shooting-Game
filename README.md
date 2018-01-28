@@ -1,5 +1,5 @@
 # Chat-Room
-HTML 5 Canvas 2D Shooing Game Engine. Build with NodeJS, Socket.io, HTML5 Canvas, JavaScript.
+Online-Multiplayer 2D Shooing Game Engine. Build with NodeJS, Socket.io, HTML5 Canvas, JavaScript.
 You can create many games with this Game-Engine.
 <br>
 - Player Movement & Shooting using arrows and mouse
